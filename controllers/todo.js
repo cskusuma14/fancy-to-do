@@ -22,7 +22,16 @@ class Todos {
                 res.status(201).json({ data })
             })
             .catch(err => {
-                res.status(500).json(err)
+                let error = ''
+                if (err.name === 'SequelizeValidationError') {
+                    for (let i = 0; i < err.errors.length - 1; i++) {
+                        error += `${err.errors[i].message} & `
+                    }
+                    error += `${err.errors[err.errors.length - 1].message}`
+                    res.status(400).json({ error })
+                } else {
+                    res.status(500).json(err)
+                }
             })
     }
 
@@ -30,10 +39,11 @@ class Todos {
         let todoId = req.params.id
         Todo.findByPk(todoId)
             .then(data => {
-                res.status(200).json({ data: data })
+                if (data) res.status(200).json({ data: data })
+                else res.status(404).json({ message: 'data not found' })
             })
             .catch(err => {
-                res.status(500).json(err)
+                res.status(500).json({ err })
             })
     }
 
@@ -55,7 +65,16 @@ class Todos {
                 else res.status(404).json({ message: 'data not found' })
             })
             .catch(err => {
-                res.status(500).json(err)
+                let error = ''
+                if (err.name === 'SequelizeValidationError') {
+                    for (let i = 0; i < err.errors.length - 1; i++) {
+                        error += `${err.errors[i].message} & `
+                    }
+                    error += `${err.errors[err.errors.length - 1].message}`
+                    res.status(400).json({ error })
+                } else {
+                    res.status(500).json(err)
+                }
             })
     }
 
