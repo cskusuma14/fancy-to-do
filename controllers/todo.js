@@ -80,12 +80,17 @@ class Todos {
 
     static deleteTodoById(req, res) {
         let todoId = req.params.id
+        let dataDelete = null
 
-        Todo.destroy({
-            where: { id: todoId }
-        })
+        Todo.findByPk(todoId)
+            .then(dataTodo => {
+                dataDelete = dataTodo
+                return Todo.destroy({
+                    where: { id: todoId }
+                })
+            })
             .then(data => {
-                if (data) res.status(200).json({ data: data })
+                if (data) res.status(200).json({ data: dataDelete })
                 else res.status(404).json({ message: 'data not found' })
             })
             .catch(err => {
