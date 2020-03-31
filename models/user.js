@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
       beforeCreate: (model, option) => {
         model.password = hashPassword(model.password)
       }
-    }
+    },
   });
 
   User.associate = function (models) {

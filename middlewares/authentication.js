@@ -10,6 +10,7 @@ const authentication = (req, res, next) => {
             const decode = jwt.verify(accessToken, 'secret')
             console.log(decode)
             req.userID = decode.userId
+            req.emailUser = decode.email
             next()
         }
     } catch (error) {

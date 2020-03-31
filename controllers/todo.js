@@ -1,5 +1,8 @@
 const { Todo } = require('../models')
 
+require('dotenv').config()
+let sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
+
 class Todos {
     static list(req, res) {
         Todo.findAll({
@@ -14,7 +17,8 @@ class Todos {
     }
 
     static create(req, res) {
-        console.log(req.body)
+        let email = req.emailUser
+        let emailUser = `${email}`
         Todo.create({
             title: req.body.title,
             description: req.body.description,
@@ -24,6 +28,38 @@ class Todos {
         })
             .then(data => {
                 res.status(201).json({ data })
+                let request = sg.emptyRequest({
+                    method: 'POST',
+                    path: '/v3/mail/send',
+                    body: {
+                        personalizations: [
+                            {
+                                to: [
+                                    {
+                                        email: emailUser
+                                    }
+                                ],
+                                subject: 'Todo List'
+                            }
+                        ],
+                        from: {
+                            email: 'noreply@example.com'
+                        },
+                        content: [
+                            {
+                                type: 'text/plain',
+                                value: `this is your todo list ${data.title} and your due_date ${data.due_date}`
+                            }
+                        ]
+                    }
+                });
+
+                sg.API(request)
+                    .then(function (response) {
+                        console.log(response.statusCode);
+                        console.log(response.body);
+                        console.log(response.headers);
+                    })
             })
             .catch(err => {
                 let error = ''
