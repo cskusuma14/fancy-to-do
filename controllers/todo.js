@@ -12,6 +12,7 @@ class Todos {
     }
 
     static create(req, res) {
+        console.log(req.body)
         Todo.create({
             title: req.body.title,
             description: req.body.description,
