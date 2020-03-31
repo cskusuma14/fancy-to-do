@@ -17,7 +17,8 @@ class Todos {
             title: req.body.title,
             description: req.body.description,
             status: false,
-            due_date: new Date(req.body.due_date)
+            due_date: new Date(req.body.due_date),
+            UserId: req.userID
         })
             .then(data => {
                 res.status(201).json({ data })

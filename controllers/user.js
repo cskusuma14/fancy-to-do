@@ -1,4 +1,6 @@
 const { User } = require('../models')
+const { checkPassword } = require('../helpers/bcrypt')
+const jwt = require('jsonwebtoken');
 
 class Users {
     static list(req, res) {
@@ -33,6 +35,36 @@ class Users {
                 } else {
                     res.status(500).json({ message: 'internal server error' })
                 }
+            })
+    }
+
+    static login(req, res) {
+        User.findOne({
+            where: {
+                email: req.body.email
+            }
+        })
+            .then(dataUser => {
+                if (!dataUser) {
+                    res.status(400).json({ message: 'email belum terdaftar' })
+                } else {
+                    const isPassword = checkPassword(req.body.password, dataUser.password)
+                    console.log(isPassword)
+                    if (!isPassword) {
+                        res.status(400).json({ message: 'password salah' })
+                    } else {
+                        const accessToken = jwt.sign({
+                            userId: dataUser.id,
+                            username: dataUser.username,
+                            email: dataUser.email,
+                            role: dataUser.role
+                        }, 'secret')
+                        res.status(201).json({ accessToken })
+                    }
+                }
+            })
+            .catch(err => {
+                res.status(500).json({ message: 'internal server error' })
             })
     }
 }

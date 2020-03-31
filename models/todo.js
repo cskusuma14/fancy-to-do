@@ -25,7 +25,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     status: DataTypes.BOOLEAN,
-    due_date: DataTypes.DATEONLY
+    due_date: DataTypes.DATEONLY,
+    UserId: DataTypes.INTEGER
   }, { sequelize });
 
   Todo.associate = function (models) {
