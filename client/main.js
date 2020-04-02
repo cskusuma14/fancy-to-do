@@ -122,8 +122,6 @@ $(document).ready(function () {
 });
 
 function getData(token) {
-    // $("#dataBody tr").remove();
-    $("#dataBody").empty();
     $("#todoList").css('display', 'block');
     $.ajax({
         url: "http://localhost:3000/todos",
@@ -133,6 +131,7 @@ function getData(token) {
         },
     })
         .done(function (result) {
+            $("#dataBody").html("")
             let trHTML = '';
             $.each(result, function (i, data) {
                 for (i = 0; i < result.data.length; i++) {
@@ -185,7 +184,6 @@ function onSignIn(googleUser) {
         },
         statusCode: {
             201: function (response) {
-                console.log(response)
                 localStorage.setItem('accesstoken', response.accessToken)
                 localStorage.setItem('loginWith', 'googleForm')
                 getData(localStorage.getItem('accesstoken'))
