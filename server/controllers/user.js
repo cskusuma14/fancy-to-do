@@ -14,13 +14,22 @@ class Users {
     }
 
     static register(req, res) {
-        User.create({
-            name: req.body.name,
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password,
-            role: 'User'
+        User.findAll({
+            where: { email: req.body.email }
         })
+            .then(dataUser => {
+                if (dataUser.length === 0) {
+                    return User.create({
+                        name: req.body.name,
+                        username: req.body.username,
+                        email: req.body.email,
+                        password: req.body.password,
+                        role: 'User'
+                    })
+                } else {
+                    res.status(400).json({ error: 'email sudah terdaftar' })
+                }
+            })
             .then(data => {
                 res.status(201).json({ data })
             })
@@ -58,7 +67,7 @@ class Users {
                             username: dataUser.username,
                             email: dataUser.email,
                             role: dataUser.role
-                        }, 'secret')
+                        }, process.env.JWT_SECRET)
                         res.status(201).json({ accessToken })
                     }
                 }

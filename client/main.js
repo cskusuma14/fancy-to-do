@@ -28,6 +28,7 @@ $(document).ready(function () {
         })
             .done(function (result) {
                 localStorage.setItem('accesstoken', result.accessToken)
+                localStorage.setItem('loginWith', 'loginForm')
                 getData(localStorage.getItem('accesstoken'))
                 $('#loginForm')[0].reset();
                 $("#Login").toggle();
@@ -35,6 +36,7 @@ $(document).ready(function () {
                 $("#btnCreateTodo").css('display', 'inline-block');
                 $("#btnLogin").css('display', 'none');
                 $("#btnRegister").css('display', 'none');
+                $(".signin2").css('display', 'none');
             })
             .fail(function (err) {
                 console.log(err.responseJSON.message)
@@ -95,17 +97,32 @@ $(document).ready(function () {
     });
 
     $("#Logout").click(function () {
-        localStorage.clear();
-        $("#todoList").css('display', 'none');
-        $("#Logout").css('display', 'none');
-        $("#btnCreateTodo").css('display', 'none');
-        $("#btnLogin").css('display', 'inline-block');
-        $("#btnRegister").css('display', 'inline-block');
+        if (localStorage.getItem('loginWith') == 'loginForm') {
+            localStorage.clear();
+            $("#todoList").css('display', 'none');
+            $("#Logout").css('display', 'none');
+            $("#btnCreateTodo").css('display', 'none');
+            $("#btnLogin").css('display', 'inline-block');
+            $("#btnRegister").css('display', 'inline-block');
+        } else {
+            let auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
+            localStorage.clear();
+            $("#todoList").css('display', 'none');
+            $("#Logout").css('display', 'none');
+            $("#btnCreateTodo").css('display', 'none');
+            $("#btnLogin").css('display', 'inline-block');
+            $("#btnRegister").css('display', 'inline-block');
+            $(".signin2").css('display', 'inline-block');
+        }
     })
 
 });
 
 function getData(token) {
+    // $("#dataBody tr").remove();
     $("#dataBody").empty();
     $("#todoList").css('display', 'block');
     $.ajax({
@@ -156,3 +173,30 @@ function deleteData(id) {
             console.log(err)
         })
 }
+
+function onSignIn(googleUser) {
+    var id_token = googleUser.getAuthResponse().id_token;
+
+    $.ajax({
+        url: "http://localhost:3000/user/google-login",
+        type: "POST",
+        data: {
+            token: id_token
+        },
+        statusCode: {
+            201: function (response) {
+                console.log(response)
+                localStorage.setItem('accesstoken', response.accessToken)
+                localStorage.setItem('loginWith', 'googleForm')
+                getData(localStorage.getItem('accesstoken'))
+                $("#Login").toggle();
+                $("#Logout").css('display', 'inline-block');
+                $("#btnCreateTodo").css('display', 'inline-block');
+                $("#btnLogin").css('display', 'none');
+                $("#btnRegister").css('display', 'none');
+                $(".signin2").css('display', 'none');
+            }
+        }
+    })
+}
+

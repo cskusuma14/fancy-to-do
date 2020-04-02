@@ -5,6 +5,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="google-signin-client_id"
+        content="1049621481257-94pk5aisienicti42lpi22u2fbc3t3m0.apps.googleusercontent.com">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -19,7 +21,7 @@
 
     <div>
         <button type="button" id="btnRegister" class="btn btn-dark">Form Register</button>
-        <button type="button" id="btnLogin" class="btn btn-dark">Form Login</button>
+        <button type="button" id="btnLogin" class="btn btn-dark">Login</button>
         <button type="button" id="btnCreateTodo" class="btn btn-dark" style="display:none">Form Todo</button>
         <button type="button" id="Logout" class="btn btn-dark" style="display:none">Logout</button>
     </div>
@@ -63,6 +65,8 @@
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
+        <br>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
     </div>
     <br>
 
@@ -86,7 +90,7 @@
     </div>
 
     <br>
-    <div id="todoList" style="display: none;">
+    <div id="todoList" style="display: none;" class="todoList">
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -113,6 +117,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 </body>
 
 </html>
