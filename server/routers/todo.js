@@ -8,6 +8,7 @@ router.get('/', authentication, todoController.list);
 router.post('/', authentication, todoController.create);
 router.get('/:id', authentication, authorization, todoController.getTodoById);
 router.put('/:id', authentication, authorization, todoController.editTodoById);
+router.put('/checklist/:id', authentication, authorization, todoController.checkListTodo);
 router.delete('/:id', authentication, authorization, todoController.deleteTodoById)
 
 module.exports = router;

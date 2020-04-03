@@ -118,6 +118,34 @@ class Todos {
             })
     }
 
+    static checkListTodo(req, res) {
+        let todoId = req.params.id
+        Todo.update({
+            status: req.body.status
+        }, {
+            where: { id: todoId }
+        })
+            .then(data => {
+                return Todo.findByPk(todoId)
+            })
+            .then(dataTodo => {
+                if (dataTodo) res.status(200).json({ data: dataTodo })
+                else res.status(404).json({ message: 'data not found' })
+            })
+            .catch(err => {
+                let error = ''
+                if (err.name === 'SequelizeValidationError') {
+                    for (let i = 0; i < err.errors.length - 1; i++) {
+                        error += `${err.errors[i].message} & `
+                    }
+                    error += `${err.errors[err.errors.length - 1].message}`
+                    res.status(400).json({ error })
+                } else {
+                    res.status(500).json(err)
+                }
+            })
+    }
+
     static deleteTodoById(req, res) {
         let todoId = req.params.id
         let dataDelete = null
