@@ -1,5 +1,19 @@
-# fancy-to-do server
-Ini adalah API untuk membuat todo list menggunakan Express js, Sequelize, dan Postgres
+# fancy-to-do APP
+an application to manage your TODO
+
+## Technologies
+Project is created with:
+* ExpressJS
+* PostgreSQL
+* Sequelize
+* JQuery
+* Ajax
+* Bootstrap
+* SweetAlert
+
+## API
+* Google Sign-in
+* Sendgrid
 
 &nbsp;
 
