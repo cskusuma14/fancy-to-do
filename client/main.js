@@ -1,5 +1,13 @@
 $(document).ready(function () {
 
+    if (localStorage.getItem('accesstoken')) {
+        $("#Logout").css('display', 'inline-block');
+        $("#btnCreateTodo").css('display', 'inline-block');
+        $("#btnLogin").css('display', 'none');
+        $("#btnRegister").css('display', 'none');
+        $(".signin2").css('display', 'none');
+    }
+
     $('#checkbox1').change(function () {
         alert('a')
     });

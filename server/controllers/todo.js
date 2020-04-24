@@ -43,7 +43,7 @@ class Todos {
                             }
                         ],
                         from: {
-                            email: 'noreply@example.com'
+                            email: 'fancy.Todo@OrionTodo.com'
                         },
                         content: [
                             {
